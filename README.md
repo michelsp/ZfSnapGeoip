@@ -4,7 +4,6 @@ ZfSnapGeoip
 Fork of Maxmind Geoip module for Zend Framework 2
 
 Created by Witold Wasiczko
-
 Edited by Michel Soares Pintor
 
 Usage
