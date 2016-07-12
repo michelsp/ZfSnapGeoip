@@ -3,6 +3,9 @@ composer.phar
 nbproject/
 vendor/
 
+# PhpStorm
+.idea/
+
 # Eclipse
 .settings/
 .buildpath

@@ -11,15 +11,19 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
 use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\Http\PhpEnvironment\Request;
 use geoiprecord as GeoipCoreRecord;
+use ZfSnapGeoip\Entity\Record;
+use Zend\Hydrator\ClassMethods;
+
 
 /**
  * Geoip Service
  *
  * @author Witold Wasiczko <witold@wasiczko.pl>
+ * @author Michel Soares Pintor <michel@michelsp.com.br>
  */
-class Geoip implements ServiceManagerAwareInterface, EventManagerAwareInterface
+class Geoip implements EventManagerAwareInterface
 {
     /**
      * @var \GeoIP
@@ -55,6 +59,37 @@ class Geoip implements ServiceManagerAwareInterface, EventManagerAwareInterface
      * @var array
      */
     private $regions;
+
+    /**
+     * @var Record
+     */
+    private $record;
+
+    /**
+     * @var ClassMethods
+     */
+    private $hydrator;
+
+    /**
+     * @var Request
+     */
+    private $request;
+
+
+    /**
+     * Geoip constructor.
+     * @param Record $record
+     * @param ClassMethods $hydrator
+     * @param DatabaseConfig $config
+     * @param Request $request
+     */
+    public function __construct(Record $record, ClassMethods $hydrator, DatabaseConfig $config, Request $request)
+    {
+        $this->record = $record;
+        $this->hydrator = $hydrator;
+        $this->config = $config;
+        $this->request = $request;
+    }
 
     /**
      * Destructor
@@ -118,35 +153,32 @@ class Geoip implements ServiceManagerAwareInterface, EventManagerAwareInterface
     /**
      * @param string $ipAdress
      * @return RecordInterface
+     *
      */
     public function getRecord($ipAdress = null)
     {
-        $record = $this->serviceManager->get('geoip_record');
         /* @var $record RecordInterface */
-
-        if (!$record instanceof RecordInterface) {
+        if (!$this->record instanceof RecordInterface) {
             throw new DomainException('Incorrect record implementation');
         }
 
         $geoipRecord = $this->getGeoipRecord($ipAdress);
 
         if (!$geoipRecord instanceof GeoipCoreRecord) {
-            return $record;
+            return $this->record;
         }
 
         $data = get_object_vars($geoipRecord);
         $data['region_name'] = $this->getRegionName($data);
 
-        $hydrator = $this->serviceManager->get('geoip_hydrator');
         /* @var $hydrator \Zend\Stdlib\Hydrator\HydratorInterface */
-
-        $hydrator->hydrate($data, $record);
+        $this->hydrator->hydrate($data, $this->record);
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array(
-            'record' => $record,
+            'record' => $this->record,
         ));
 
-        return $record;
+        return $this->record;
     }
 
     /**
@@ -197,11 +229,6 @@ class Geoip implements ServiceManagerAwareInterface, EventManagerAwareInterface
      */
     private function getConfig()
     {
-        if ($this->config === null) {
-            /* @var $config DatabaseConfig */
-            $config = $this->serviceManager->get('ZfSnapGeoip\DatabaseConfig');
-            $this->config = $config;
-        }
         return $this->config;
     }
 
@@ -211,10 +238,9 @@ class Geoip implements ServiceManagerAwareInterface, EventManagerAwareInterface
     private function getDefaultIp()
     {
         if ($this->defaultIp === null) {
-            $request = $this->serviceManager->get('Request');
 
-            if ($request instanceof HttpRequest) {
-                $ipAddress = $request->getServer('REMOTE_ADDR', false);
+            if ($this->request instanceof HttpRequest) {
+                $ipAddress = $this->request->getServer('REMOTE_ADDR', false);
                 $this->defaultIp = $ipAddress;
             } else {
                 $this->defaultIp = false;
@@ -242,14 +268,6 @@ class Geoip implements ServiceManagerAwareInterface, EventManagerAwareInterface
             }
         }
         return null;
-    }
-
-    /**
-     * @param ServiceManager $serviceManager
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
     }
 
     /**
