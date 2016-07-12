@@ -4,6 +4,7 @@ ZfSnapGeoip [![Build Status](https://travis-ci.org/snapshotpl/ZfSnapGeoip.png?br
 Maxmind Geoip module for Zend Framework 2
 
 Created by Witold Wasiczko
+Editer by Michel Soares Pintor
 
 Usage
 -----
