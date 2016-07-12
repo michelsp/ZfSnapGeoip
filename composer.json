@@ -12,6 +12,11 @@
             "name": "Witold Wasiczko",
             "email": "witold@wasiczko.pl",
             "homepage": "http://www.psd2html.pl/"
+        },
+        {
+            "name": "Michel Soares Pintor",
+            "email": "michel@michelsp.com.br",
+            "homepage": "http://www.michelsp.com.br/"
         }
     ],
     "require": {
