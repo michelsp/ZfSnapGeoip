@@ -4,7 +4,7 @@ namespace ZfSnapGeoip\Service;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfSnapGeoip\Service\Geoip;
+use Zend\Http\PhpEnvironment\Request as HttpRequest;
 
 /**
  * Factory of Geoip
@@ -19,7 +19,7 @@ class GeoipFactory implements FactoryInterface
         $record = $serviceLocator->get('geoip_record');
         $hydrator = $serviceLocator->get('geoip_hydrator');
         $config = $serviceLocator->get('ZfSnapGeoip\DatabaseConfig');
-        $request = $serviceLocator->get('Request');
+        $request = new HttpRequest();
 
         return new Geoip($record, $hydrator, $config, $request);
     }
