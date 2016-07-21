@@ -1,11 +1,8 @@
 <?php
-
 namespace ZfSnapGeoip\Service;
-
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfSnapGeoip\Service\Geoip;
-
+use Zend\Http\PhpEnvironment\Request as HttpRequest;
 /**
  * Factory of Geoip
  *
@@ -13,15 +10,12 @@ use ZfSnapGeoip\Service\Geoip;
  */
 class GeoipFactory implements FactoryInterface
 {
-
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $record = $serviceLocator->get('geoip_record');
         $hydrator = $serviceLocator->get('geoip_hydrator');
         $config = $serviceLocator->get('ZfSnapGeoip\DatabaseConfig');
-        $request = $serviceLocator->get('Request');
-
+        $request = new HttpRequest();
         return new Geoip($record, $hydrator, $config, $request);
     }
-
 }

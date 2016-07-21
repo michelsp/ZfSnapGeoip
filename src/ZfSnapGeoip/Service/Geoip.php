@@ -10,11 +10,10 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
-use Zend\ServiceManager\ServiceManager;
 use Zend\Http\PhpEnvironment\Request;
 use geoiprecord as GeoipCoreRecord;
 use ZfSnapGeoip\Entity\Record;
-use Zend\Hydrator\ClassMethods;
+use \Zend\Stdlib\Hydrator\HydratorInterface;
 
 
 /**
@@ -29,11 +28,6 @@ class Geoip implements EventManagerAwareInterface
      * @var \GeoIP
      */
     private $geoip;
-
-    /**
-     * @var ServiceManager
-     */
-    private $serviceManager;
 
     /**
      * @var EventManagerInterface
@@ -61,12 +55,12 @@ class Geoip implements EventManagerAwareInterface
     private $regions;
 
     /**
-     * @var Record
+     * @var RecordInterface
      */
     private $record;
 
     /**
-     * @var ClassMethods
+     * @var \Zend\Stdlib\Hydrator\HydratorInterface
      */
     private $hydrator;
 
@@ -78,12 +72,12 @@ class Geoip implements EventManagerAwareInterface
 
     /**
      * Geoip constructor.
-     * @param Record $record
-     * @param ClassMethods $hydrator
+     * @param Record|RecordInterface $record
+     * @param HydratorInterface $hydrator
      * @param DatabaseConfig $config
-     * @param Request $request
+     * @param HttpRequest $request
      */
-    public function __construct(Record $record, ClassMethods $hydrator, DatabaseConfig $config, Request $request)
+    public function __construct(RecordInterface $record, HydratorInterface $hydrator, DatabaseConfig $config, HttpRequest $request)
     {
         $this->record = $record;
         $this->hydrator = $hydrator;
