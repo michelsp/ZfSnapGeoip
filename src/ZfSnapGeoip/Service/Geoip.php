@@ -10,7 +10,6 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
 use Zend\Http\PhpEnvironment\Request as HttpRequest;
-use Zend\Http\PhpEnvironment\Request;
 use geoiprecord as GeoipCoreRecord;
 use ZfSnapGeoip\Entity\Record;
 use \Zend\Stdlib\Hydrator\HydratorInterface;
@@ -65,7 +64,7 @@ class Geoip implements EventManagerAwareInterface
     private $hydrator;
 
     /**
-     * @var Request
+     * @var HttpRequest
      */
     private $request;
 
