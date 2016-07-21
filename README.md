@@ -6,6 +6,7 @@ Fork of Maxmind Geoip module for Zend Framework 2
 Created by Witold Wasiczko
 Edited by Michel Soares Pintor
 
+
 Usage
 -----
 Default ZfSnapGeoip returns Record object created by current user's IP address.
