@@ -29,7 +29,7 @@
         "geoip/geoip": "1.14"
     },
     "require-dev": {
-        "zendframework/zendframework": "~2.5",
+        "zendframework/zendframework": "2.5.*",
         "phpunit/phpunit": "~3.7"
     },
     "autoload": {
