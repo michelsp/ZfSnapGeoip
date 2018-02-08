@@ -88,7 +88,7 @@ and add `ZfSnapGeoip` module name to application.config.php
 
 To download data file from http://dev.maxmind.com/geoip/legacy/geolite/ use `Zend\Console` (you can add this to crontab):
 ```
-php index/public.php geoip download
+php public/index.php geoip download
 ```
 Or use autoupdate database during install/update in composer (just add this lines to composer.json and run composer):
 ```json
