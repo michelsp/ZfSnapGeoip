@@ -23,9 +23,9 @@
         "php": ">=5.3.3",
         "zendframework/zend-console": "2.6.*",
         "zendframework/zend-view": "2.5.*",
-        "zendframework/zend-eventmanager": "2.5.*",
-        "zendframework/zend-modulemanager": "2.5.*",
-        "zendframework/zend-servicemanager": "2.5.*",
+        "zendframework/zend-eventmanager": "2.6.*",
+        "zendframework/zend-modulemanager": "2.7.*",
+        "zendframework/zend-servicemanager": "2.7.*",
         "geoip/geoip": "1.14"
     },
     "require-dev": {
